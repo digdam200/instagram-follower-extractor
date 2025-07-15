@@ -1,0 +1,31 @@
+name: Auto Extract Instagram Followers
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # هر ۶ ساعت اجرا میشه
+  workflow_dispatch:        # اجازه اجرای دستی
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install requirements
+        run: |
+          pip install -r requirements.txt.txt
+
+      - name: Run script
+        env:
+          IG_SESSIONID: ${{ secrets.IG_SESSIONID }}
+          IG_CSRFTOKEN: ${{ secrets.IG_CSRFTOKEN }}
+          IG_DS_USER_ID: ${{ secrets.IG_DS_USER_ID }}
+        run: |
+          python ex_delay_loop.py
